@@ -4,3 +4,5 @@ __pycache__/
 .env
 *.pem
 .aws/
+app_backup.py
+test.txt
