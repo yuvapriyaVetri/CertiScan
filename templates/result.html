@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>CertiScan - Verification Result</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+
+            margin: 0;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at top left,
+                    #12395c,
+                    #07111f 55%,
+                    #020811
+                );
+
+            color: white;
+
+            min-height: 100vh;
+
+        }
+
+
+        .container {
+
+            width: 92%;
+
+            max-width: 950px;
+
+            margin: 40px auto;
+
+        }
+
+
+        .header {
+
+            text-align: center;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .logo {
+
+            font-size: 34px;
+
+            font-weight: bold;
+
+            color: #38d9ff;
+
+            letter-spacing: 1px;
+
+        }
+
+
+        .subtitle {
+
+            color: #9bb3c8;
+
+            margin-top: 6px;
+
+        }
+
+
+        .card {
+
+            background:
+                rgba(255,255,255,0.07);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.12);
+
+            border-radius: 20px;
+
+            padding: 30px;
+
+            margin-bottom: 24px;
+
+            backdrop-filter: blur(12px);
+
+            box-shadow:
+                0 20px 50px
+                rgba(0,0,0,0.35);
+
+        }
+
+
+        .status {
+
+            text-align: center;
+
+            font-size: 30px;
+
+            font-weight: bold;
+
+            padding: 20px;
+
+            border-radius: 15px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .valid {
+
+            background:
+                rgba(34,197,94,0.14);
+
+            color: #4ade80;
+
+            border:
+                1px solid
+                rgba(74,222,128,0.3);
+
+        }
+
+
+        .revoked {
+
+            background:
+                rgba(239,68,68,0.14);
+
+            color: #f87171;
+
+            border:
+                1px solid
+                rgba(248,113,113,0.3);
+
+        }
+
+
+        .invalid {
+
+            background:
+                rgba(249,115,22,0.14);
+
+            color: #fb923c;
+
+            border:
+                1px solid
+                rgba(251,146,60,0.3);
+
+        }
+
+
+        .notfound {
+
+            background:
+                rgba(148,163,184,0.12);
+
+            color: #cbd5e1;
+
+            border:
+                1px solid
+                rgba(203,213,225,0.2);
+
+        }
+
+
+        .message {
+
+            text-align: center;
+
+            color: #b8cad9;
+
+            line-height: 1.6;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .details {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 14px;
+
+        }
+
+
+        .detail {
+
+            background:
+                rgba(0,0,0,0.18);
+
+            padding: 17px;
+
+            border-radius: 12px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.06);
+
+        }
+
+
+        .label {
+
+            font-size: 12px;
+
+            color: #7f9bb1;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.7px;
+
+        }
+
+
+        .value {
+
+            margin-top: 7px;
+
+            font-size: 17px;
+
+            font-weight: 600;
+
+        }
+
+
+        .aws {
+
+            margin-top: 18px;
+
+            text-align: center;
+
+            padding: 12px;
+
+            border-radius: 10px;
+
+            background:
+                rgba(255,255,255,0.04);
+
+            color: #9fb5c7;
+
+            font-size: 14px;
+
+        }
+
+
+        .history-title {
+
+            color: #38d9ff;
+
+            margin-top: 0;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .timeline {
+
+            position: relative;
+
+            margin-left: 10px;
+
+            padding-left: 30px;
+
+            border-left:
+                2px solid
+                rgba(56,217,255,0.5);
+
+        }
+
+
+        .event {
+
+            position: relative;
+
+            padding-bottom: 28px;
+
+        }
+
+
+        .event:last-child {
+
+            padding-bottom: 0;
+
+        }
+
+
+        .event::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 13px;
+
+            height: 13px;
+
+            border-radius: 50%;
+
+            background: #38d9ff;
+
+            left: -38px;
+
+            top: 2px;
+
+            box-shadow:
+                0 0 12px
+                rgba(56,217,255,0.7);
+
+        }
+
+
+        .date {
+
+            color: #7f9bb1;
+
+            font-size: 13px;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .transition {
+
+            font-size: 20px;
+
+            font-weight: bold;
+
+            color: white;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .reason {
+
+            color: #a9bfce;
+
+            line-height: 1.5;
+
+        }
+
+
+        .button {
+
+            display: block;
+
+            text-align: center;
+
+            text-decoration: none;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #38d9ff,
+                    #28aee4
+                );
+
+            color: #03111c;
+
+            padding: 15px;
+
+            border-radius: 11px;
+
+            font-weight: bold;
+
+            margin-top: 20px;
+
+            transition: 0.2s;
+
+        }
+
+
+        .button:hover {
+
+            transform: translateY(-2px);
+
+        }
+
+
+        @media(max-width: 650px) {
+
+            .details {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .status {
+
+                font-size: 23px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <div class="header">
+
+        <div class="logo">
+            CertiScan
+        </div>
+
+        <div class="subtitle">
+            Cloud-Based Academic Certificate Verification
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+
+        {% if certificate.status == "VALID" %}
+
+            <div class="status valid">
+                ✓ VALID CERTIFICATE
+            </div>
+
+        {% elif certificate.status == "REVOKED" %}
+
+            <div class="status revoked">
+                ⚠ REVOKED CERTIFICATE
+            </div>
+
+        {% elif certificate.status == "INVALID" %}
+
+            <div class="status invalid">
+                ⚠ INVALID CERTIFICATE
+            </div>
+
+        {% else %}
+
+            <div class="status notfound">
+                ✕ CERTIFICATE NOT FOUND
+            </div>
+
+        {% endif %}
+
+
+        <div class="message">
+
+            {{ certificate.message }}
+
+        </div>
+
+
+        {% if certificate.student %}
+
+
+        <div class="details">
+
+
+            <div class="detail">
+
+                <div class="label">
+                    Certificate ID
+                </div>
+
+                <div class="value">
+                    {{ certificate.certificate_id }}
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="label">
+                    Student
+                </div>
+
+                <div class="value">
+                    {{ certificate.student }}
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="label">
+                    Institution
+                </div>
+
+                <div class="value">
+                    {{ certificate.institution }}
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="label">
+                    Program
+                </div>
+
+                <div class="value">
+                    {{ certificate.program }}
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="label">
+                    Graduation Year
+                </div>
+
+                <div class="value">
+                    {{ certificate.year }}
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="label">
+                    Risk Level
+                </div>
+
+                <div class="value">
+                    {{ certificate.risk }}
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="aws">
+
+            ☁ AWS Cloud Storage:
+            {{ "Connected" if certificate.s3_available else "Registry Record Available" }}
+
+        </div>
+
+
+        {% endif %}
+
+
+    </div>
+
+
+    {% if certificate.history %}
+
+
+    <div class="card">
+
+
+        <h2 class="history-title">
+            Certificate Status History
+        </h2>
+
+
+        <div class="timeline">
+
+
+            {% for event in certificate.history %}
+
+
+            <div class="event">
+
+
+                <div class="date">
+                    {{ event.date }}
+                </div>
+
+
+                <div class="transition">
+
+                    {{ event.from }}
+                    →
+                    {{ event.to }}
+
+                </div>
+
+
+                <div class="reason">
+
+                    {{ event.reason }}
+
+                </div>
+
+
+            </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+    </div>
+
+
+    {% endif %}
+
+
+    <a href="/" class="button">
+
+        ← Verify Another Certificate
+
+    </a>
+
+
+</div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CertiScan | Certificate Verification</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(circle at top left, #12345a 0%, transparent 35%),
+                radial-gradient(circle at bottom right, #083344 0%, transparent 35%),
+                #050b16;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        /* NAVBAR */
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 0;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: #22d3ee;
+            letter-spacing: 0.5px;
+        }
+
+        .logo span {
+            color: #ffffff;
+        }
+
+        .nav-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #a8b8cc;
+            font-size: 14px;
+        }
+
+        .status-dot {
+            width: 9px;
+            height: 9px;
+            background: #22c55e;
+            border-radius: 50%;
+            box-shadow: 0 0 12px #22c55e;
+        }
+
+        /* HERO */
+
+        .hero {
+            text-align: center;
+            padding: 55px 20px 45px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 30px;
+            background: rgba(34, 211, 238, 0.10);
+            border: 1px solid rgba(34, 211, 238, 0.30);
+            color: #67e8f9;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: clamp(38px, 6vw, 64px);
+            margin: 0;
+            line-height: 1.05;
+            letter-spacing: -2px;
+        }
+
+        h1 span {
+            color: #22d3ee;
+        }
+
+        .hero-text {
+            max-width: 720px;
+            margin: 20px auto 35px;
+            color: #9fb0c5;
+            font-size: 17px;
+            line-height: 1.7;
+        }
+
+        /* ACTIONS */
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 55px;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            padding: 15px 25px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            transition: 0.25s;
+            cursor: pointer;
+        }
+
+        .primary {
+            background: linear-gradient(135deg, #06b6d4, #2563eb);
+            color: white;
+            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.20);
+        }
+
+        .primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(6, 182, 212, 0.35);
+        }
+
+        .secondary {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.14);
+            color: #e5e7eb;
+        }
+
+        .secondary:hover {
+            transform: translateY(-3px);
+            border-color: #22d3ee;
+            background: rgba(34,211,238,0.08);
+        }
+
+        /* FEATURE CARDS */
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #dce8f5;
+            font-size: 22px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 35px;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.055);
+            border: 1px solid rgba(255,255,255,0.10);
+            border-radius: 18px;
+            padding: 25px;
+            backdrop-filter: blur(12px);
+            transition: 0.25s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(34,211,238,0.45);
+        }
+
+        .icon {
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            margin: 0 0 8px;
+            font-size: 17px;
+        }
+
+        .card p {
+            margin: 0;
+            color: #8fa2b8;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* HOW IT WORKS */
+
+        .workflow {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.09);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 25px 0 50px;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            text-align: center;
+        }
+
+        .step {
+            position: relative;
+            padding: 15px 8px;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 12px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(34,211,238,0.12);
+            border: 1px solid rgba(34,211,238,0.35);
+            color: #67e8f9;
+            font-weight: bold;
+        }
+
+        .step strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        .step small {
+            display: block;
+            color: #7f91a7;
+            margin-top: 6px;
+            line-height: 1.4;
+        }
+
+        /* CLOUD PANEL */
+
+        .cloud-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding: 25px 30px;
+            margin-bottom: 45px;
+            border-radius: 18px;
+            background: linear-gradient(
+                90deg,
+                rgba(6,182,212,0.09),
+                rgba(37,99,235,0.08)
+            );
+            border: 1px solid rgba(34,211,238,0.16);
+        }
+
+        .cloud-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .cloud-icon {
+            font-size: 34px;
+        }
+
+        .cloud-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .cloud-text {
+            color: #879bb2;
+            font-size: 13px;
+        }
+
+        .online {
+            color: #4ade80;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        /* FOOTER */
+
+        footer {
+            text-align: center;
+            padding: 25px 0 35px;
+            color: #64748b;
+            font-size: 12px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 900px) {
+            .features {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .steps {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                padding: 18px 0;
+            }
+
+            .nav-status {
+                display: none;
+            }
+
+            .hero {
+                padding-top: 35px;
+            }
+
+            .cloud-panel {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- NAVIGATION -->
+
+    <nav>
+        <div class="logo">
+            Certi<span>Scan</span>
+        </div>
+
+        <div class="nav-status">
+            <div class="status-dot"></div>
+            System Online
+        </div>
+    </nav>
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="badge">
+            ☁ CLOUD-BASED ACADEMIC CREDENTIAL VERIFICATION
+        </div>
+
+        <h1>
+            Verify Certificates<br>
+            <span>Instantly & Securely</span>
+        </h1>
+
+        <p class="hero-text">
+            CertiScan provides a fast and reliable way to verify academic
+            certificates using certificate IDs and QR codes. Check credential
+            status, view certificate details and track status history.
+        </p>
+
+        <div class="actions">
+
+            <a href="/verify/VIT-2026-001" class="button primary">
+                🔍 Verify Certificate
+            </a>
+
+            <a href="/scan" class="button secondary">
+                📷 Scan Certificate QR
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- FEATURES -->
+
+    <h2 class="section-title">
+        Verification Capabilities
+    </h2>
+
+    <div class="features">
+
+        <div class="card">
+            <div class="icon">📷</div>
+            <h3>QR Verification</h3>
+            <p>
+                Scan a certificate QR code and directly access
+                the corresponding verification record.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="icon">🔐</div>
+            <h3>Trusted Registry</h3>
+            <p>
+                Certificate IDs are checked against the
+                CertiScan trusted credential registry.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="icon">☁️</div>
+            <h3>AWS Cloud Storage</h3>
+            <p>
+                Certificate files are stored securely using
+                Amazon S3 cloud storage.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="icon">📋</div>
+            <h3>Status History</h3>
+            <p>
+                View credential status changes including
+                issuance, revocation and invalidation events.
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- WORKFLOW -->
+
+    <div class="workflow">
+
+        <h2 class="section-title">
+            How CertiScan Works
+        </h2>
+
+        <div class="steps">
+
+            <div class="step">
+                <div class="step-number">1</div>
+                <strong>Certificate</strong>
+                <small>Academic credential</small>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <strong>QR Scan</strong>
+                <small>Scan certificate QR</small>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <strong>Lookup</strong>
+                <small>Find certificate ID</small>
+            </div>
+
+            <div class="step">
+                <div class="step-number">4</div>
+                <strong>Verification</strong>
+                <small>Check trusted registry</small>
+            </div>
+
+            <div class="step">
+                <div class="step-number">5</div>
+                <strong>Result</strong>
+                <small>View status & history</small>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CLOUD STATUS -->
+
+    <div class="cloud-panel">
+
+        <div class="cloud-left">
+
+            <div class="cloud-icon">
+                ☁️
+            </div>
+
+            <div>
+                <div class="cloud-title">
+                    AWS Cloud Infrastructure
+                </div>
+
+                <div class="cloud-text">
+                    CertiScan application hosted on Amazon EC2
+                    with certificate storage through Amazon S3.
+                </div>
+            </div>
+
+        </div>
+
+        <div class="online">
+            ● ONLINE
+        </div>
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+        CertiScan © 2026 · Academic Certificate Verification Prototype
+        <br>
+        Synthetic demonstration credentials — not real university records.
+    </footer>
+
+</div>
+
+</body>
+</html>

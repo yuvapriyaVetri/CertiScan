@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CertiScan | QR Scanner</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #07111f, #101b32);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 40px 0;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .logo {
+            font-size: 36px;
+            font-weight: bold;
+            color: #22d3ee;
+        }
+
+        .subtitle {
+            color: #9caec5;
+            margin-top: 8px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 18px;
+            padding: 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: 0.25s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: #22d3ee;
+        }
+
+        .card img {
+            width: 160px;
+            height: 160px;
+            background: white;
+            padding: 10px;
+            border-radius: 12px;
+        }
+
+        .id {
+            margin: 15px 0;
+            font-weight: bold;
+            color: #e5f7ff;
+        }
+
+        .verify {
+            display: inline-block;
+            padding: 10px 18px;
+            border-radius: 10px;
+            background: #0891b2;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .verify:hover {
+            background: #06b6d4;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 35px;
+            color: #22d3ee;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <div class="logo">CertiScan</div>
+        <div class="subtitle">
+            Academic Certificate QR Verification
+        </div>
+    </div>
+
+    <div class="grid">
+
+        {% for certificate_id in certificate_ids %}
+
+        <div class="card">
+
+            <img
+                src="/static/qr_codes/{{ certificate_id }}.png"
+                alt="QR Code"
+            >
+
+            <div class="id">
+                {{ certificate_id }}
+            </div>
+
+            <a
+                class="verify"
+                href="/verify/{{ certificate_id }}"
+            >
+                Verify Certificate
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    <div style="text-align:center;">
+        <a class="back" href="/">
+            ← Back to CertiScan
+        </a>
+    </div>
+
+</div>
+
+</body>
+</html>
